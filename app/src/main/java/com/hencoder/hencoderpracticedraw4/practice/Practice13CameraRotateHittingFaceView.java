@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -47,6 +48,10 @@ public class Practice13CameraRotateHittingFaceView extends View {
         animator.setDuration(5000);
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(ValueAnimator.INFINITE);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float newZ = - displayMetrics.density * 10;
+        camera.setLocation(0,0,newZ);
     }
 
     @Override
@@ -76,6 +81,18 @@ public class Practice13CameraRotateHittingFaceView extends View {
         int centerX = point.x + bitmapWidth / 2;
         int centerY = point.y + bitmapHeight / 2;
 
+
+//        canvas.save();
+//        camera.save();
+//        camera.rotateX(degree);
+//        canvas.translate(centerX, centerY);
+//        camera.applyToCanvas(canvas);
+//        canvas.translate(-centerX, -centerY);
+//        camera.restore();
+//
+//        canvas.drawBitmap(bitmap, point.x, point.y, paint);
+//        canvas.restore();
+
         camera.save();
         matrix.reset();
         camera.rotateX(degree);
@@ -83,6 +100,7 @@ public class Practice13CameraRotateHittingFaceView extends View {
         camera.restore();
         matrix.preTranslate(-centerX, -centerY);
         matrix.postTranslate(centerX, centerY);
+
         canvas.save();
         canvas.concat(matrix);
         canvas.drawBitmap(bitmap, point.x, point.y, paint);
